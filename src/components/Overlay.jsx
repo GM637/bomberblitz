@@ -3,6 +3,7 @@ import { useMultiplayerState } from "playroomkit";
 import Title from "./Title";
 import PlayersList from "./PlayersList";
 import EmojiSelector from "./EmojiSelector";
+import PlayersReactions from "./PlayersReactions";
 
 import "./Overlay.css";
 
@@ -12,7 +13,8 @@ export default function Overlay() {
   return (
     <>
       <Title />
-      <PlayersList currentEmoji={currentEmoji} />
+      <PlayersList />
+      <PlayersReactions currentEmoji={currentEmoji} />
       <EmojiSelector
         currentEmoji={currentEmoji}
         setCurrentEmoji={setCurrentEmoji}

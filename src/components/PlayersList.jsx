@@ -15,7 +15,7 @@ const randomRotations = Array(20)
       )}px)`
   );
 
-export default function PlayersList({ currentEmoji }) {
+export default function PlayersList() {
   const players = usePlayersList();
   const playersProfiles = useMemo(
     () =>
