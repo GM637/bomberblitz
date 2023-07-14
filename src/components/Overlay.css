@@ -1,0 +1,64 @@
+.Title {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.PlayersList {
+  position: fixed;
+  top: 20%;
+  left: 10%;
+  & .player-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    & .player-profile {
+      margin-left: 10px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      & .player-avatar {
+        height: 4rem;
+        width: 4rem;
+      }
+      & .player-name {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+.EmojiSelector {
+  position: fixed;
+  top: 20%;
+  right: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  & .emoji-button {
+    padding: 0;
+    width: 5rem;
+    height: 5rem;
+    font-size: 3rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: #00000050;
+    border-radius: 50%;
+    transition: background 0.2s ease-in-out;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  & .emoji-button:hover {
+    background: #00000080;
+    cursor: pointer;
+  }
+  & .emoji-button:active {
+    background: #000000;
+    cursor: pointer;
+  }
+}
