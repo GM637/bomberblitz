@@ -1,17 +1,77 @@
-import { useRef } from "react";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
+import { useGLTF, useAnimations, useKeyboardControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 const MODEL = "/3d/player.glb";
 
+const MAX_SPEED = 3;
+
 export default function Character(props) {
-  const group = useRef();
+  const characterRef = useRef(null);
   const { nodes, animations } = useGLTF(MODEL);
-  const { actions } = useAnimations(animations, group);
+  const { actions, names } = useAnimations(animations, characterRef);
+  const [_subscribedKeys, getKeys] = useKeyboardControls();
+
+  const [isWalking, setIsWalking] = useState(false);
+
+  const direction = new THREE.Vector3(0, 0, 0);
+  const pointer = new THREE.Vector3(0, 0, 0);
+  const lookVec = new THREE.Vector3(1, 0, 0);
+
+  useFrame((_state, delta) => {
+    if (characterRef?.current === undefined) return;
+
+    const { current: character } = characterRef;
+
+    // reset direction
+    direction.x = 0;
+    direction.z = 0;
+
+    // update input
+    const { up, down, left, right, jump } = getKeys();
+
+    if (up) direction.x -= 1;
+    if (down) direction.x += 1;
+    if (left) direction.z += 1;
+    if (right) direction.z -= 1;
+
+    // normalize direction
+    direction.normalize();
+
+    // update position
+    character.position.x += direction.x * MAX_SPEED * delta;
+    character.position.z += direction.z * MAX_SPEED * delta;
+
+    // update rotation
+    pointer.copy(character.position);
+    character.lookAt(pointer);
+
+    // update animations
+    if (direction.length() > 0.01 && !isWalking) setIsWalking(true);
+    if (direction.length() <= 0.01 && isWalking) setIsWalking(false);
+  });
+
+  const getCurrentMove = () => {
+    /*
+      
+    */
+    if (isWalking) return names[1];
+    return names[0];
+  };
+
+  useEffect(() => {
+    const animation = getCurrentMove();
+
+    actions[animation].reset().fadeIn(0.5).play();
+    return () => actions[animation].fadeOut(0.5);
+  }, [isWalking]);
+
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={characterRef} {...props} dispose={null}>
       <group name="blockbench_export">
         <group>
-          <group name="Body" position={[0, 0.25, 0]} rotation={[0, 1.562, 0]}>
+          <group name="Body" position={[0, 0.25, 0]}>
             <group name="Legs2" />
             <group name="Head" position={[0, 0.125, 0]}>
               <mesh
