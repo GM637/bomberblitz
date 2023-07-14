@@ -1,9 +1,11 @@
+import Experience from "./Experience";
+
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1>Bomberblitz</h1>
+      <Experience />
     </div>
   );
 }
