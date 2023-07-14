@@ -11,8 +11,8 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
 
@@ -30,6 +30,10 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+ul {
+  list-style: none;
 }
 
 p,
