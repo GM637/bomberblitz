@@ -15,6 +15,7 @@ export default function Experience() {
           far: 1000,
           position: [7, 10, 0],
         }}
+        shadows
       >
         <OrbitControls />
 
