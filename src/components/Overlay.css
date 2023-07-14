@@ -62,3 +62,68 @@
     cursor: pointer;
   }
 }
+
+.PlayersReactions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 400px;
+  width: 300px;
+  & .emoji-display {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    position: absolute;
+    & .card {
+      background: #fff;
+      border: 2px solid #000000;
+      /* box-shadow: 0px 0.4rem 0px rgba(0, 0, 0, 0.25); */
+      border-radius: 1rem;
+      padding: 3rem 2rem;
+      /* opacity: 0; */
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
+      animation: slideUp 2s linear;
+      & .avatar img {
+        width: 2.5rem;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+      }
+    }
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+    margin-top: 200vh;
+    animation-timing-function: ease-out;
+  }
+  15% {
+    margin-top: -10vh;
+    animation-timing-function: ease-in;
+  }
+  18% {
+    margin-top: 5vh;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    margin-top: 0px;
+    animation-timing-function: ease-in;
+  }
+  95% {
+    opacity: 1;
+    margin-top: 0px;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    margin-top: 0px;
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+}
