@@ -22,7 +22,7 @@ export default function Experience() {
             fov: 75,
             near: 0.1,
             far: 1000,
-            position: [7, 10, 0],
+            position: [0, 10, 7],
           }}
           shadows
         >

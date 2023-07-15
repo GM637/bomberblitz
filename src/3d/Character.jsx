@@ -21,7 +21,7 @@ export default function Character({ animation }) {
     <group ref={characterRef} dispose={null}>
       <group name="blockbench_export">
         <group>
-          <group name="Body" position={[0, 0.25, 0]}>
+          <group name="Body" position={[0, 0.25, 0]} rotation={[0, -Math.PI/2, 0]}>
             <group name="Legs2" />
             <group name="Head" position={[0, 0.125, 0]}>
               <mesh

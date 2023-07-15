@@ -1,13 +1,13 @@
 import Lights from "../environment/Lights";
 import Stage from "../3d/Stage";
-import Players from "../3d/Players";
+import LocalCharacter from "../3d/LocalCharacter";
 
 export default function Scene() {
   return (
     <>
       <Lights />
       <Stage />
-      <Players />
+      <LocalCharacter />
     </>
   );
 }
