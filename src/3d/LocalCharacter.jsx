@@ -2,6 +2,7 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import * as THREE from "three";
+import { onPlayerJoin, insertCoin, isHost, myPlayer } from "playroomkit";
 
 import Character from "./Character";
 
@@ -15,13 +16,9 @@ export default function LocalCharacter() {
 
   const characterDirection = new THREE.Vector3();
 
-  const [characterTarget] = useState(
-    () => new THREE.Vector3(0, 0, 0)
-  ); 
+  const [characterTarget] = useState(() => new THREE.Vector3(0, 0, 0));
 
-  const [smoothedCharacterTarget] = useState(
-    () => new THREE.Vector3(0, 0, 0)
-  );
+  const [smoothedCharacterTarget] = useState(() => new THREE.Vector3(0, 0, 0));
 
   useFrame((_, delta) => {
     if (!characterRef?.current) return;
@@ -61,11 +58,17 @@ export default function LocalCharacter() {
     if (!characterDirection.x && !characterDirection.z) {
       if (animation !== "Idle") setAnimation("Idle");
     }
+
+    // Share the character's position, rotation & animation
+
+    myPlayer().setState("pos", characterRef.current.position);
+    myPlayer().setState("rot", characterRef.current.rotation);
+    myPlayer().setState("anim", animation);
   });
 
   return (
     <group ref={characterRef}>
-      <Character animation={animation} />;
+      <Character animation={animation} />
     </group>
   );
 }
