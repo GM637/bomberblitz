@@ -16,6 +16,7 @@ export default function Experience() {
           { name: "left", keys: ["ArrowLeft"] },
           { name: "right", keys: ["ArrowRight"] },
           { name: "jump", keys: ["KeyX"] },
+          { name: "bomb", keys: ["KeyC"] },
         ]}
       >
         <Canvas
