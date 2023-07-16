@@ -65,7 +65,7 @@
 
 .PlayersReactions {
   position: fixed;
-  bottom: 0;
+  bottom: 20%;
   left: 0;
   height: 400px;
   width: 300px;
@@ -101,28 +101,28 @@
 @keyframes slideUp {
   0% {
     opacity: 1;
-    margin-top: 200vh;
+    margin-right: 200vh;
     animation-timing-function: ease-out;
   }
   15% {
-    margin-top: -10vh;
+    margin-right: -10vh;
     animation-timing-function: ease-in;
   }
   18% {
-    margin-top: 5vh;
+    margin-right: 5vh;
     animation-timing-function: ease-out;
   }
   20% {
-    margin-top: 0px;
+    margin-right: 0px;
     animation-timing-function: ease-in;
   }
   95% {
     opacity: 1;
-    margin-top: 0px;
+    margin-right: 0px;
     animation-timing-function: ease-in;
   }
   100% {
-    margin-top: 0px;
+    margin-right: 0px;
     opacity: 1;
     animation-timing-function: ease-out;
   }
