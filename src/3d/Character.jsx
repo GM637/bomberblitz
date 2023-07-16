@@ -9,7 +9,7 @@ export default function Character({ animation }) {
   const characterRef = useRef(null);
   const { scene, animations } = useGLTF(MODEL);
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
-  const { nodes } = useGraph(clone)
+  const { nodes } = useGraph(clone);
   const { actions } = useAnimations(animations, characterRef);
 
   useEffect(() => {
@@ -20,8 +20,8 @@ export default function Character({ animation }) {
   return (
     <group ref={characterRef} dispose={null}>
       <group name="blockbench_export">
-        <group>
-          <group name="Body" position={[0, -0.20, 0]} rotation={[0, -Math.PI/2, 0]}>
+        <group position={[0, -0.42, 0]}>
+          <group name="Body" position={[0, 0.25, 0]} rotation={[0, -Math.PI/2, 0]}>
             <group name="Legs2" />
             <group name="Head" position={[0, 0.125, 0]}>
               <mesh

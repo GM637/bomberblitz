@@ -5,10 +5,11 @@ import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
-import Character from "./Character";
+import { randomStartPos } from "../utils/randomPosition";
 
-const RUN_SPEED = 4;
-const MOVEMENT_SPEED = 4;
+import { AREA_SIZE, MOVEMENT_SPEED } from "../utils/constants";
+
+import Character from "./Character";
 
 const SocketPlayer = forwardRef(({ position, rotation }, ref) => {
   const [currentAnimation, setCurrentAnimation] = useState("Idle");
@@ -61,11 +62,13 @@ export default function Players() {
       const playerRef = createRef();
       const bodyRef = createRef();
 
+      const startPos = randomStartPos(AREA_SIZE);
+
       const currCharacter = (
         <SocketPlayer
           key={state.id}
           ref={playerRef}
-          position={[0, 3, 0]}
+          position={startPos}
           rotation={[0, 0, 0]}
         />
       );
@@ -74,7 +77,7 @@ export default function Players() {
 
       if (isHost()) {
         currBody = (
-          <LocalPlayer key={state.id} ref={bodyRef} position={[0, 3, 0]} />
+          <LocalPlayer key={state.id} ref={bodyRef} position={startPos} />
         );
       }
 
@@ -102,12 +105,12 @@ export default function Players() {
     for (const player of players) {
       const state = player.state;
 
-      const dir = state.getState("dir");
-
       // update collider position if is host
       if (isHost()) {
         const bodyRef = player.bodyRef;
         if (!bodyRef?.current) continue;
+
+        const dir = state.getState("dir");
 
         //move rigidbody
         const impulse = {
@@ -127,18 +130,10 @@ export default function Players() {
 
         // move the player
         const playerPos = playerRef.current.position;
-        if (
-          playerPos.x !== pos.x ||
-          playerPos.y !== pos.y ||
-          playerPos.z !== pos.z
-        ) {
-          playerRef.current.position.x = pos.x;
-          playerRef.current.position.y = pos.y;
-          playerRef.current.position.z = pos.z;
 
-          // update shared position
-          state.setState("pos", pos);
-        }
+        if (playerPos.x !== pos.x) playerPos.x = pos.x;
+        if (playerPos.y !== pos.y) playerPos.y = pos.y;
+        if (playerPos.z !== pos.z) playerPos.z = pos.z;
 
         // update animation
         const animation = dir.x || dir.z ? "Run" : "Idle";
@@ -153,8 +148,7 @@ export default function Players() {
           playerRef.current.rotation.y = angle;
 
           // update shared rotation
-          const rot = playerRef.current.rotation;
-          state.setState("rot", rot);
+          state.setState("rot", angle);
         }
       } else {
         // update character
@@ -165,21 +159,28 @@ export default function Players() {
         const pos = state.getState("pos");
         if (!pos) continue;
 
-        playerRef.current.position.x = pos.x;
-        playerRef.current.position.y = pos.y;
-        playerRef.current.position.z = pos.z;
+        const { position } = playerRef.current;
+
+        if (position.x !== pos.x) position.x = pos.x;
+        if (position.y !== pos.y) position.y = pos.y;
+        if (position.z !== pos.z) position.z = pos.z;
 
         // retrieve shared rotation
         const rot = state.getState("rot");
-        if (!rot) continue;
+        if (rot === undefined) continue;
 
-        playerRef.current.rotation.y = rot.y;
+        playerRef.current.rotation.y = rot;
+
+        // // smooth rotation
+        // playerRef.current.rotation.y +=
+        //   (rot.y - playerRef.current.rotation.y) * ROT_SPEED * delta;
 
         // retrieve shared animation
         const animation = state.getState("anim");
         if (!animation) continue;
-
-        playerRef.current.name = animation;
+        if (playerRef.current?.name !== animation) {
+          playerRef.current.name = animation;
+        }
       }
     }
   });
