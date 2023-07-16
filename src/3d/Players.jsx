@@ -1,12 +1,14 @@
 import { createRef, forwardRef, Suspense, useEffect, useState } from "react";
-import { myPlayer, onPlayerJoin } from "playroomkit";
+import { myPlayer, isHost, onPlayerJoin } from "playroomkit";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
 import Character from "./Character";
 
 const RUN_SPEED = 4;
+const MOVEMENT_SPEED = 0.1;
 
 const SocketPlayer = forwardRef(({ position, rotation, animation }, ref) => {
   return (
@@ -15,6 +17,23 @@ const SocketPlayer = forwardRef(({ position, rotation, animation }, ref) => {
         <Character animation={animation} />
       </Suspense>
     </group>
+  );
+});
+
+const LocalPlayer = forwardRef(({ position, rotation, animation }, ref) => {
+  return (
+    <RigidBody
+      ref={ref}
+      enabledRotations={[false, false, false]}
+      type="dynamic"
+      colliders={false}
+      position={position}
+    >
+      <CapsuleCollider args={[0.12, 0.3]} />
+      <Suspense fallback={null}>
+        <Character animation={animation} />
+      </Suspense>
+    </RigidBody>
   );
 });
 
@@ -33,9 +52,17 @@ export default function Players() {
     onPlayerJoin(async (state) => {
       const ref = createRef();
 
-      const currCharacter = (
+      const currCharacter = isHost() ? (
+        <LocalPlayer
+          key={state.id}
+          ref={ref}
+          position={[0, 3, 0]}
+          rotation={[0, 0, 0]}
+          animation={"Idle"}
+        />
+      ) : (
         <SocketPlayer
-          key={myPlayer().id}
+          key={state.id}
           ref={ref}
           position={[0, 0, 0]}
           rotation={[0, 0, 0]}
@@ -59,19 +86,44 @@ export default function Players() {
     direction.z = Number(down) - Number(up);
     direction.normalize();
 
+    // update shared direction inputs
     myPlayer().setState("dir", direction);
 
-    for (const player of players) {
-      const { ref, state } = player;
-      const dir = state.getState("dir");
-      const { x, z } = dir;
-      ref.current.position.x += x * RUN_SPEED * delta;
-      ref.current.position.z += z * RUN_SPEED * delta;
-      ref.current.lookAt(
-        ref.current.position.x + x,
-        ref.current.position.y,
-        ref.current.position.z + z
-      );
+    if (isHost()) {
+      for (const player of players) {
+        const { ref, state } = player;
+        if (!ref.current) continue;
+
+        const dir = state.getState("dir");
+
+        // move rigidbody
+        // const impulse = [
+        //   dir.x * MOVEMENT_SPEED * delta,
+        //   0,
+        //   dir.z * MOVEMENT_SPEED * delta,
+        // ];
+        // ref.current.applyImpulse(impulse, true);
+
+        // update shared position
+        // const pos = ref.current.getWorldPos();
+
+        // console.log(pos); ///// ///// ///// ///// ///// /////CONSOLE
+
+        // state.setState("pos", pos);
+      }
+    } else {
+      for (const player of players) {
+        const { ref, state } = player;
+        if (!ref?.current) continue;
+
+        // retrieve shared position
+        const pos = state.getState("pos");
+        if (!pos) continue;
+
+        ref.current.position.x = pos.x;
+        ref.current.position.y = pos.y;
+        ref.current.position.z = pos.z;
+      }
     }
   });
 

@@ -10,7 +10,7 @@ export default function Scene() {
     <>
       <Lights />
       <Suspense fallback={null}>
-        <Physics gravity={[0, -9.81, 0]} colliders={false} debug>
+        <Physics debug>
           <Arena />
           <Players />
         </Physics>

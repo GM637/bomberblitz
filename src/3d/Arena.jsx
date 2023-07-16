@@ -7,7 +7,7 @@ const MODEL = "/3d/arena.glb";
 export default function Model(props) {
   const { nodes } = useGLTF(MODEL);
   return (
-    <RigidBody type="fixed">
+    <RigidBody type="fixed" colliders={false}>
       <group {...props} dispose={null} position={[0, -1, 0]}>
         <mesh
           castShadow
