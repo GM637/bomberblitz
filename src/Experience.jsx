@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { KeyboardControls } from "@react-three/drei";
+import { KeyboardControls, Loader } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 
 import Scene from "./scenes/Scene";
 
@@ -27,7 +28,9 @@ export default function Experience() {
           shadows
         >
           <Scene />
+          <OrbitControls />
         </Canvas>
+        <Loader />
       </KeyboardControls>
     </div>
   );
