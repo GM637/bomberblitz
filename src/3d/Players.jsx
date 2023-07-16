@@ -8,7 +8,7 @@ import * as THREE from "three";
 import Character from "./Character";
 
 const RUN_SPEED = 4;
-const MOVEMENT_SPEED = 0.1;
+const MOVEMENT_SPEED = 4;
 
 const SocketPlayer = forwardRef(({ position, rotation, animation }, ref) => {
   return (
@@ -96,13 +96,9 @@ export default function Players() {
 
         const dir = state.getState("dir");
 
-        // move rigidbody
-        // const impulse = [
-        //   dir.x * MOVEMENT_SPEED * delta,
-        //   0,
-        //   dir.z * MOVEMENT_SPEED * delta,
-        // ];
-        // ref.current.applyImpulse(impulse, true);
+        //move rigidbody
+        const impulse = { x: dir.x * MOVEMENT_SPEED * delta, y: 0, z: dir.z * MOVEMENT_SPEED * delta }
+        ref.current.applyImpulse(impulse, true);
 
         // update shared position
         // const pos = ref.current.getWorldPos();
