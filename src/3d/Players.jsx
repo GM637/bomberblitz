@@ -10,17 +10,27 @@ import Character from "./Character";
 const RUN_SPEED = 4;
 const MOVEMENT_SPEED = 4;
 
-const SocketPlayer = forwardRef(({ position, rotation, animation }, ref) => {
+const SocketPlayer = forwardRef(({ position, rotation }, ref) => {
+  const [currentAnimation, setCurrentAnimation] = useState("Idle");
+
+  useFrame(() => {
+    if (!ref?.current?.name) return;
+
+    if (currentAnimation !== ref.current.name) {
+      setCurrentAnimation(ref.current.name);
+    }
+  });
+
   return (
     <group ref={ref} position={position} rotation={rotation}>
       <Suspense fallback={null}>
-        <Character animation={animation} />
+        <Character animation={currentAnimation} />
       </Suspense>
     </group>
   );
 });
 
-const LocalPlayer = forwardRef(({ position, rotation, animation }, ref) => {
+const LocalPlayer = forwardRef(({ position }, ref) => {
   return (
     <RigidBody
       ref={ref}
@@ -55,9 +65,8 @@ export default function Players() {
         <SocketPlayer
           key={state.id}
           ref={playerRef}
-          position={[0, 0, 0]}
+          position={[0, 3, 0]}
           rotation={[0, 0, 0]}
-          animation={"Idle"}
         />
       );
 
@@ -65,13 +74,7 @@ export default function Players() {
 
       if (isHost()) {
         currBody = (
-          <LocalPlayer
-            key={state.id}
-            ref={bodyRef}
-            position={[0, 3, 0]}
-            rotation={[0, 0, 0]}
-            animation={"Idle"}
-          />
+          <LocalPlayer key={state.id} ref={bodyRef} position={[0, 3, 0]} />
         );
       }
 
@@ -88,6 +91,7 @@ export default function Players() {
   }, []);
 
   useFrame((_, delta) => {
+    // keyboard controls
     direction.x = Number(right) - Number(left);
     direction.z = Number(down) - Number(up);
     direction.normalize();
@@ -136,6 +140,13 @@ export default function Players() {
           state.setState("pos", pos);
         }
 
+        // update animation
+        const animation = dir.x || dir.z ? "Run" : "Idle";
+        if (playerRef.current?.name !== animation) {
+          playerRef.current.name = animation;
+          state.setState("anim", animation);
+        }
+
         // rotate the player
         if (dir.x || dir.z) {
           const angle = Math.atan2(dir.x, dir.z);
@@ -163,6 +174,12 @@ export default function Players() {
         if (!rot) continue;
 
         playerRef.current.rotation.y = rot.y;
+
+        // retrieve shared animation
+        const animation = state.getState("anim");
+        if (!animation) continue;
+
+        playerRef.current.name = animation;
       }
     }
   });
