@@ -100,12 +100,12 @@ export default function Players() {
         const impulse = { x: dir.x * MOVEMENT_SPEED * delta, y: 0, z: dir.z * MOVEMENT_SPEED * delta }
         ref.current.applyImpulse(impulse, true);
 
+
+
+
         // update shared position
-        // const pos = ref.current.getWorldPos();
-
-        // console.log(pos); ///// ///// ///// ///// ///// /////CONSOLE
-
-        // state.setState("pos", pos);
+        const pos = ref.current.translation();
+        state.setState("pos", pos);
       }
     } else {
       for (const player of players) {
