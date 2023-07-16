@@ -1,20 +1,6 @@
 import { usePlayersList } from "playroomkit";
 import { useMemo } from "react";
 
-const randomNumBetween = (min, max) => {
-  Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const randomRotations = Array(20)
-  .fill(0)
-  .map(
-    () =>
-      `rotate(${randomNumBetween(-5, 5)}deg) translateX(${randomNumBetween(
-        -10,
-        10
-      )}px)`
-  );
-
 export default function PlayersList() {
   const players = usePlayersList();
   const playersProfiles = useMemo(
