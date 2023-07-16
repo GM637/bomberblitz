@@ -15,7 +15,12 @@ export default function Model(props) {
           geometry={nodes.cylinder.geometry}
           material={nodes.cylinder.material}
         />
-        <CylinderCollider args={[1 / 2, 5.6]} position={[0, 0.5, 0]} />
+        <CylinderCollider
+          args={[1 / 2, 5.6]}
+          position={[0, 0.5, 0]}
+          friction={0.7}
+          restitution={0.3}
+        />
       </group>
     </RigidBody>
   );
