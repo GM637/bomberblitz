@@ -7,7 +7,14 @@ import * as THREE from "three";
 
 import { randomStartPos } from "../utils/randomPosition";
 
-import { AREA_SIZE, MOVEMENT_SPEED } from "../utils/constants";
+import {
+  AREA_SIZE,
+  MAX_SPEED,
+  RUN_SPEED,
+  SONIC_SPEED,
+  VELOCITY,
+} from "../utils/constants";
+import { getAnimation } from "../utils/animation";
 
 import Character from "./Character";
 
@@ -114,10 +121,16 @@ export default function Players() {
 
         //move rigidbody
         const impulse = {
-          x: dir.x * MOVEMENT_SPEED * delta,
+          x: dir.x * VELOCITY * delta,
           y: 0,
-          z: dir.z * MOVEMENT_SPEED * delta,
+          z: dir.z * VELOCITY * delta,
         };
+
+        const linvel = bodyRef.current.linvel();
+
+        if (Math.abs(linvel.x) >= MAX_SPEED) impulse.x = 0;
+        if (Math.abs(linvel.z) >= MAX_SPEED) impulse.z = 0;
+
         bodyRef.current.applyImpulse(impulse, true);
 
         // update shared position
@@ -136,7 +149,9 @@ export default function Players() {
         if (playerPos.z !== pos.z) playerPos.z = pos.z;
 
         // update animation
-        const animation = dir.x || dir.z ? "Run" : "Idle";
+
+        const animation = getAnimation(linvel);
+
         if (playerRef.current?.name !== animation) {
           playerRef.current.name = animation;
           state.setState("anim", animation);
