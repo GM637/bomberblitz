@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { createRef, forwardRef, Suspense, useEffect, useState } from "react";
-import { RigidBody, BallCollider } from "@react-three/rapier";
-import { isHost } from "playroomkit";
+import { BallCollider, RigidBody } from "@react-three/rapier";
+import { getState, isHost, setState } from "playroomkit";
 
 import Bomb from "./Bomb";
 
@@ -17,114 +17,149 @@ const SocketBomb = forwardRef(({ position, rotation }, ref) => {
 
 const LocalBomb = forwardRef(({ position }, ref) => {
   return (
-    <RigidBody ref={ref} colliders={false} position={position}>
+    <RigidBody ref={ref} colliders={false} position={position} type="dynamic">
       <BallCollider args={[0.4]} />
     </RigidBody>
   );
 });
 
-export default function Bombs({ currentBombs, setCurrentBombs }) {
+export default function Bombs({ currentBombsIds, setCurrentBombsIds }) {
   const [bodies, setBodies] = useState([]);
   const [models, setModels] = useState([]);
   const [bombs, setBombs] = useState([]);
 
   useEffect(() => {
-    const lastCurrBomb = currentBombs[currentBombs.length - 1];
-    if (!lastCurrBomb) return;
+    // new bomb dropped
+    if (bombs.length < currentBombsIds.length) {
+      const lastCurrBombId = currentBombsIds[currentBombsIds.length - 1];
 
-    const lastBomb = bombs[bombs.length - 1];
-    if (lastBomb?.state?.bombId === lastCurrBomb.bombId) return;
+      const state = getState(lastCurrBombId);
+      if (!state) return;
 
-    const { bombDropTime, bombId, bombLinvel, bombPos, bombRot } = lastCurrBomb;
+      if (bombs.length > 0) {
+        const lastBomb = bombs[bombs.length - 1];
+        if (lastBomb?.id === lastCurrBombId) return;
+      }
 
-    const bodyRef = createRef();
-    const modelRef = createRef();
+      const { id, bombPos, bombRot } = state;
 
-    const currModel = (
-      <SocketBomb
-        key={bombId + "-model"}
-        ref={modelRef}
-        position={bombPos}
-        rotation={bombRot}
-      />
-    );
+      const bodyRef = createRef();
+      const modelRef = createRef();
 
-    let currBody;
-
-    if (isHost) {
-      currBody = (
-        <LocalBomb key={bombId + "-body"} ref={bodyRef} position={bombPos} />
+      const currModel = (
+        <SocketBomb
+          key={id + "-model"}
+          ref={modelRef}
+          position={bombPos}
+          rotation={bombRot}
+        />
       );
 
-      setBodies((prev) => [...prev, currBody]);
-    }
+      let currBody;
 
-    setModels((prev) => [...prev, currModel]);
-    setBombs((prev) => [...prev, { bodyRef, modelRef, state: lastCurrBomb }]);
-  }, [currentBombs]);
+      if (isHost) {
+        currBody = (
+          <LocalBomb key={id + "-body"} ref={bodyRef} position={bombPos} />
+        );
+
+        setBodies([...bodies, currBody]);
+      }
+
+      setModels([...models, currModel]);
+      setBombs([...bombs, { id, bodyRef, modelRef, state }]);
+    }
+    // bomb exploded
+  }, [currentBombsIds]);
 
   useFrame(() => {
     if (!bombs.length) return;
 
-    let newBombs = [];
+    /*
+      // // HOST UPDATE
+    */
+    if (isHost()) {
+      for (const bomb of bombs) {
+        const state = getState(bomb.id);
 
-    for (const bomb of bombs) {
-      const { state } = bomb;
-
-      if (isHost) {
         const bodyRef = bomb.bodyRef;
         if (!bodyRef.current) continue;
 
-        const { bombDropTime, bombId, bombLinvel, bombPos, bombRot } = state;
+        // apply linvel
+        if (
+          state.bombLinvel.x !== 0 ||
+          state.bombLinvel.y !== 0 ||
+          state.bombLinvel.z !== 0
+        ) {
+          bodyRef.current.applyImpulse(state.bombLinvel);
+
+          // reset linvel
+          state.bombLinvel = { x: 0, y: 0, z: 0 };
+        }
 
         // update shared position
         const pos = bodyRef.current.translation();
+        state.bombPos = pos;
 
         // update shared rotation
-        // const rot = bodyRef.current.rotation();
+        const rot = bodyRef.current?.rotation();
+        state.bombRot = {
+          x: rot.x,
+          y: rot.y,
+          z: rot.z,
+        };
 
-        // store new bomb state
-        newBombs.push({
-          bombDropTime,
-          bombId,
-          bombLinvel,
-          bombPos: pos,
-          bombRot,
-        });
+        // update shared state
+        setState(state.id, state, false);
 
         // update model
         const modelRef = bomb.modelRef;
         if (!modelRef.current) continue;
 
-        ///// ///// ///// ///// ///// ///// ///// ///// console.log("modelRef:", modelRef)
-
         // model position
-        // modelRef.current.position = pos;
+        modelRef.current.position.x = pos.x;
+        modelRef.current.position.y = pos.y;
+        modelRef.current.position.z = pos.z;
 
         // model rotation
-        // modelRef.current.rotation.copy(rot);
-      } else {
-        const { modelRef } = bomb;
-        if (!modelRef.current) continue;
-
-        // model position
-        modelRef.current.position = state.bombPos;
-
-        // model rotation
-        // modelRef.current.rotation = state.bombRot;
+        modelRef.current.rotation.x = rot.x;
+        modelRef.current.rotation.y = rot.y;
+        modelRef.current.rotation.z = rot.z;
       }
     }
 
-    // share new bomb state
-    if (isHost) {
-      setCurrentBombs(newBombs);
+    /*
+      // // CLIENT UPDATE
+    */
+    if (!isHost()) {
+      for (const bomb of bombs) {
+        const id = bomb.id;
+        const updatedState = getState(id);
+
+        if (!updatedState) continue;
+
+        // update model position
+        const modelRef = bomb.modelRef;
+
+        const pos = updatedState.bombPos;
+
+        modelRef.current.position.x = pos.x;
+        modelRef.current.position.y = pos.y;
+        modelRef.current.position.z = pos.z;
+
+        // update model rotation
+        const rot = updatedState.bombRot;
+
+        modelRef.current.rotation.x = rot.x;
+        modelRef.current.rotation.y = rot.y;
+        modelRef.current.rotation.z = rot.z;
+      }
     }
   });
 
   return (
     <group>
       {models}
-      {bodies}
+      {isHost() ? bodies : null}
     </group>
   );
 }
