@@ -35,9 +35,6 @@ export default function Bombs({ currentBombs, setCurrentBombs }) {
 
     const lastBomb = bombs[bombs.length - 1];
 
-    // console.log("ls: ", lastBomb?.state?.id);
-    // console.log("lc: ", lastCurrBomb.id);
-
     if (lastBomb?.state?.id === lastCurrBomb.id) {
       console.log("same bomb id drop");
       return;
@@ -88,7 +85,9 @@ export default function Bombs({ currentBombs, setCurrentBombs }) {
         const pos = bodyRef.current.translation();
 
         // update shared rotation
-        // const rot = bodyRef.current.rotation();
+        const rot = bodyRef.current?.rotation();
+        
+        const newBombRot = [rot.x, rot.y, rot.z];
 
         // store new bomb state
         newBombs.push({
@@ -103,8 +102,6 @@ export default function Bombs({ currentBombs, setCurrentBombs }) {
         const modelRef = bomb.modelRef;
         if (!modelRef.current) continue;
 
-        ///// ///// ///// ///// ///// ///// ///// ///// console.log("modelRef:", modelRef)
-
         // model position
 
         modelRef.current.position.x = pos.x;
@@ -112,6 +109,10 @@ export default function Bombs({ currentBombs, setCurrentBombs }) {
         modelRef.current.position.z = pos.z;
 
         // model rotation
+        // modelRef.current.rotation.x = rot.x;
+        // modelRef.current.rotation.y = rot.y;
+        // modelRef.current.rotation.z = rot.z;
+
         // modelRef.current.rotation.copy(rot);
 
         //   } else {

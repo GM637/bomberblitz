@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Physics } from "@react-three/rapier";
 import { useMultiplayerState } from "playroomkit";
 
