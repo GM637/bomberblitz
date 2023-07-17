@@ -33,7 +33,14 @@ export default function Bombs({ currentBombs, setCurrentBombs }) {
     if (!lastCurrBomb) return;
 
     const lastBomb = bombs[bombs.length - 1];
-    if (lastBomb?.state?.bombId === lastCurrBomb.bombId) return;
+
+    console.log("ls: ", lastBomb?.state?.bombId);
+    console.log("lc: ", lastCurrBomb.bombId);
+
+    if (lastBomb?.state?.bombId === lastCurrBomb.bombId) {
+      console.log("same bomb id drop");
+      return;
+    }
 
     const { bombDropTime, bombId, bombLinvel, bombPos, bombRot } = lastCurrBomb;
 
