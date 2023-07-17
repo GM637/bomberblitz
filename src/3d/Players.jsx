@@ -2,7 +2,7 @@ import { createRef, forwardRef, Suspense, useEffect, useState } from "react";
 import { myPlayer, isHost, onPlayerJoin } from "playroomkit";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { CapsuleCollider, RigidBody, BallCollider } from "@react-three/rapier";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
 import { randomStartPos } from "../utils/randomPosition";
@@ -190,22 +190,24 @@ export default function Players({ setCurrentBombs }) {
         if (bombDrop) {
           state.setState("bomb", false);
 
-          const bombPos = {
-            x: pos.x + dir.x * BOMB_DISTANCE,
-            y: pos.y,
-            z: pos.z + dir.z * BOMB_DISTANCE,
-          };
-          const bombRot = { x: 0, y: 0, z: 0 };
+          const bombPos = [
+            pos.x + dir.x * BOMB_DISTANCE,
+            pos.y,
+            pos.z + dir.z * BOMB_DISTANCE,
+          ];
+
+          const bombRot = [0, 0, 0];
           const bombLinvel = {
             x: linvel.x * BOMB_SPEED,
             y: linvel.y * BOMB_SPEED,
             z: linvel.z * BOMB_SPEED,
           };
           const bombId = state.id + clock.getElapsedTime();
+          const bombDropTime = clock.getElapsedTime();
 
           setCurrentBombs((bombs) => [
             ...bombs,
-            { bombPos, bombRot, bombLinvel, bombId },
+            { bombDropTime, bombId, bombLinvel, bombPos, bombRot },
           ]);
         }
       } else {
