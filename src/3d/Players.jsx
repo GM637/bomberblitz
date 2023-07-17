@@ -1,7 +1,13 @@
 import { createRef, forwardRef, Suspense, useEffect, useState } from "react";
-import { myPlayer, isHost, onPlayerJoin } from "playroomkit";
+import {
+  myPlayer,
+  isHost,
+  onPlayerJoin,
+  getState,
+  setState,
+} from "playroomkit";
 import { useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
@@ -9,9 +15,10 @@ import { randomStartPos } from "../utils/randomPosition";
 
 import {
   AREA_SIZE,
+  BOMB_DISTANCE,
+  BOMB_INTERVAL,
+  BOMB_SPEED,
   MAX_SPEED,
-  RUN_SPEED,
-  SONIC_SPEED,
   VELOCITY,
 } from "../utils/constants";
 import { getAnimation } from "../utils/animation";
@@ -46,21 +53,27 @@ const LocalPlayer = forwardRef(({ position }, ref) => {
       type="dynamic"
       colliders={false}
       position={position}
+      linearDamping={0.7}
     >
       <CapsuleCollider args={[0.12, 0.3]} />
     </RigidBody>
   );
 });
 
-export default function Players() {
+export default function Players({ currentBombsIds, setCurrentBombsIds }) {
+  const { clock } = useThree();
   const [players, setPlayers] = useState([]);
   const [bodies, setBodies] = useState([]);
   const [characters, setCharacters] = useState([]);
+
+  // not safe practice, client could modoify this
+  const [lastBomb, setLastBomb] = useState(0);
 
   const up = useKeyboardControls((state) => state.up);
   const down = useKeyboardControls((state) => state.down);
   const left = useKeyboardControls((state) => state.left);
   const right = useKeyboardControls((state) => state.right);
+  const bomb = useKeyboardControls((state) => state.bomb);
 
   const direction = new THREE.Vector3();
 
@@ -108,6 +121,19 @@ export default function Players() {
 
     // update shared direction inputs
     myPlayer().setState("dir", direction);
+
+    // drop bomb
+    if (bomb) {
+      // retrieve elapsed time
+      const elapsedTime = clock.getElapsedTime();
+
+      // check if enough time has passed
+      if (elapsedTime - lastBomb > BOMB_INTERVAL) {
+        // send an update to the server
+        myPlayer().setState("bomb", true);
+        setLastBomb(elapsedTime);
+      }
+    }
 
     for (const player of players) {
       const state = player.state;
@@ -165,6 +191,44 @@ export default function Players() {
           // update shared rotation
           state.setState("rot", angle);
         }
+
+        // drop bomb
+        const bombDrop = state.getState("bomb");
+        if (bombDrop) {
+          state.setState("bomb", false);
+
+          const bombPos = [
+            pos.x + dir.x * BOMB_DISTANCE,
+            pos.y,
+            pos.z + dir.z * BOMB_DISTANCE,
+          ];
+
+          const bombRot = [0, 0, 0];
+          const bombLinvel = {
+            x: linvel.x * BOMB_SPEED,
+            y: linvel.y * BOMB_SPEED,
+            z: linvel.z * BOMB_SPEED,
+          };
+
+          const bombId = state.id + clock.getElapsedTime();
+          const bombDropTime = clock.getElapsedTime();
+
+          // update current bomb Ids
+          setState(
+            bombId,
+            {
+              id: bombId,
+              bombDropTime,
+              bombLinvel,
+              bombPos,
+              bombRot,
+              bombDroppedBy: state.id,
+            },
+            false
+          );
+
+          setCurrentBombsIds([...currentBombsIds, bombId]);
+        }
       } else {
         // update character
         const playerRef = player.playerRef;
@@ -203,7 +267,7 @@ export default function Players() {
   return (
     <group>
       {characters}
-      {bodies}
+      {isHost() ? bodies : null}
     </group>
   );
 }

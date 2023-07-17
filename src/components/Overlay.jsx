@@ -6,6 +6,7 @@ import EmojiSelector from "./EmojiSelector";
 import PlayersReactions from "./PlayersReactions";
 
 import "./Overlay.css";
+import { useEffect } from "react";
 
 export default function Overlay() {
   const [currentEmoji, setCurrentEmoji] = useMultiplayerState("emoji", []);
