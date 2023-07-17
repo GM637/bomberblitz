@@ -1,5 +1,11 @@
 import { createRef, forwardRef, Suspense, useEffect, useState } from "react";
-import { myPlayer, isHost, onPlayerJoin } from "playroomkit";
+import {
+  myPlayer,
+  isHost,
+  onPlayerJoin,
+  getState,
+  setState,
+} from "playroomkit";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
@@ -54,7 +60,7 @@ const LocalPlayer = forwardRef(({ position }, ref) => {
   );
 });
 
-export default function Players({ currentBombs, setCurrentBombs }) {
+export default function Players({ currentBombsIds, setCurrentBombsIds }) {
   const { clock } = useThree();
   const [players, setPlayers] = useState([]);
   const [bodies, setBodies] = useState([]);
@@ -203,13 +209,25 @@ export default function Players({ currentBombs, setCurrentBombs }) {
             y: linvel.y * BOMB_SPEED,
             z: linvel.z * BOMB_SPEED,
           };
+
           const bombId = state.id + clock.getElapsedTime();
           const bombDropTime = clock.getElapsedTime();
 
-          setCurrentBombs([
-            ...currentBombs,
-            { bombDropTime, id: bombId, bombLinvel, bombPos, bombRot },
-          ]);
+          // update current bomb Ids
+          setState(
+            bombId,
+            {
+              id: bombId,
+              bombDropTime,
+              bombLinvel,
+              bombPos,
+              bombRot,
+              bombDroppedBy: state.id,
+            },
+            false
+          );
+
+          setCurrentBombsIds([...currentBombsIds, bombId]);
         }
       } else {
         // update character
@@ -249,7 +267,7 @@ export default function Players({ currentBombs, setCurrentBombs }) {
   return (
     <group>
       {characters}
-      {bodies}
+      {isHost() ? bodies : null}
     </group>
   );
 }

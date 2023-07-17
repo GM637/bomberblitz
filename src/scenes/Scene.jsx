@@ -8,7 +8,10 @@ import Players from "../3d/Players";
 import Bombs from "../3d/Bombs";
 
 export default function Scene() {
-  const [currentBombs, setCurrentBombs] = useMultiplayerState("bombs", []);
+  const [currentBombsIds, setCurrentBombsIds] = useMultiplayerState(
+    "bombIds",
+    []
+  );
 
   return (
     <>
@@ -17,12 +20,12 @@ export default function Scene() {
         <Physics debug>
           <Arena />
           <Players
-            currentBombs={currentBombs}
-            setCurrentBombs={setCurrentBombs}
+            currentBombsIds={currentBombsIds}
+            setCurrentBombsIds={setCurrentBombsIds}
           />
           <Bombs
-            currentBombs={currentBombs}
-            setCurrentBombs={setCurrentBombs}
+            currentBombsIds={currentBombsIds}
+            setCurrentBombsIds={setCurrentBombsIds}
           />
         </Physics>
       </Suspense>
