@@ -13,8 +13,8 @@ export default function Character({ animation }) {
   const { actions } = useAnimations(animations, characterRef);
 
   useEffect(() => {
-    actions[animation].reset().fadeIn(0.5).play();
-    return () => actions[animation].fadeOut(0.5);
+    actions[animation].reset().fadeIn(0.2).play();
+    return () => actions[animation].fadeOut(0.2);
   }, [animation]);
 
   return (
