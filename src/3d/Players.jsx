@@ -53,7 +53,7 @@ const LocalPlayer = forwardRef(({ position }, ref) => {
   );
 });
 
-export default function Players({ setCurrentBombs }) {
+export default function Players({ currentBombs, setCurrentBombs }) {
   const { clock } = useThree();
   const [players, setPlayers] = useState([]);
   const [bodies, setBodies] = useState([]);
@@ -205,9 +205,9 @@ export default function Players({ setCurrentBombs }) {
           const bombId = state.id + clock.getElapsedTime();
           const bombDropTime = clock.getElapsedTime();
 
-          setCurrentBombs((bombs) => [
-            ...bombs,
-            { bombDropTime, bombId, bombLinvel, bombPos, bombRot },
+          setCurrentBombs([
+            ...currentBombs,
+            { bombDropTime, id: bombId, bombLinvel, bombPos, bombRot },
           ]);
         }
       } else {
