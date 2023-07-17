@@ -1,6 +1,6 @@
 export const randomStartPos = (areaSize) => {
   const x = randomIntBewteen(-areaSize, areaSize);
-  const y = 0;
+  const y = 0.5;
   const z = randomIntBewteen(-areaSize, areaSize);
 
   return [x, y, z];
