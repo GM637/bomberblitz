@@ -19,8 +19,12 @@ import {
   BOMB_INTERVAL,
   BOMB_SPEED,
   MAX_SPEED,
+  ROTATION_SPEED,
   VELOCITY,
 } from "../utils/constants";
+
+import { smoothAngle } from "../utils/angles";
+
 import { getAnimation } from "../utils/animation";
 
 import Character from "./Character";
@@ -186,7 +190,15 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
         // rotate the player
         if (dir.x || dir.z) {
           const angle = Math.atan2(dir.x, dir.z);
-          playerRef.current.rotation.y = angle;
+
+          // smooth rotation
+          const smoothedAngle = smoothAngle(
+            playerRef.current.rotation.y,
+            angle,
+            delta * ROTATION_SPEED
+          );
+
+          playerRef.current.rotation.y = smoothedAngle;
 
           // update shared rotation
           state.setState("rot", angle);
