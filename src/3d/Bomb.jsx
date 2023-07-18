@@ -9,7 +9,7 @@ export default function Bomb() {
     <group dispose={null}>
       <group name="blockbench_export">
         <group scale={2}>
-          <group name="Bomb" position={[0, 0.156, 0]}>
+          <group name="Bomb" position={[0, 0, 0]}>
             <mesh
               name="sphere"
               castShadow
