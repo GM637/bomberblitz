@@ -140,10 +140,8 @@
 
 .ControlSelector {
   position: fixed;
-  top: 20%;
-  left: 0;
-  height: 300px;
-  width: 400px;
+  top: 5vh;
+  left: 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,6 +182,80 @@
 
     & img {
       filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+}
+
+.Nipple {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #333;
+  height: 30vh;
+  aspect-ratio: 1/1;
+  border-radius: 30px;
+
+  & .ReactNipple {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nipple_collection_2 {
+  background: blue !important;
+}
+
+/* .front {
+  background: yellow !important;
+} */
+
+.ActionButtons {
+  position: fixed;
+  bottom: 10vh;
+  right: 10vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background: #333;
+    padding: 10px;
+
+    & img {
+      width: 80%;
+      height: 80%;
+
+      /* change image color */
+      filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+    & img::selection {
+      background: transparent;
+    }
+  }
+
+  & button:hover {
+    cursor: pointer;
+
+    & img {
+      filter: invert(80%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+
+  & button:active {
+    cursor: pointer;
+
+    & img {
+      filter: invert(50%) sepia(0%) saturate(0%) hue-rotate(0deg)
         brightness(100%) contrast(100%);
     }
   }
