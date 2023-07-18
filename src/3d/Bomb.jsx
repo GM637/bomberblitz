@@ -1,12 +1,29 @@
 import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+
+import { BOMB_SCALE_FACTOR, BOMB_SCALE_SPEED } from "../utils/constants";
 
 const MODEL = "/3d/bomb.glb";
 
 export default function Bomb() {
   const { nodes } = useGLTF(MODEL);
+  const ref = useRef(null);
+
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+
+    const t = clock.getElapsedTime();
+
+    const newScale =
+      1 - BOMB_SCALE_FACTOR * Math.abs(Math.cos(t * BOMB_SCALE_SPEED) ** 2);
+    ref.current.scale.x = newScale;
+    ref.current.scale.y = newScale;
+    ref.current.scale.z = newScale;
+  });
 
   return (
-    <group dispose={null}>
+    <group ref={ref} dispose={null}>
       <group name="blockbench_export">
         <group scale={2}>
           <group name="Bomb" position={[0, 0, 0]}>
