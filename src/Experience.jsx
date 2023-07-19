@@ -37,7 +37,6 @@ export default function Experience() {
             enableZoom={true}
             enableRotate={false}
           />
-           <MountainRing radius={10} width={1} height={2} segments={100} />
         </Canvas>
         <Loader />
       </KeyboardControls>
