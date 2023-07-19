@@ -17,6 +17,8 @@ export default function Experience() {
           { name: "right", keys: ["ArrowRight"] },
           { name: "jump", keys: ["KeyX"] },
           { name: "bomb", keys: ["KeyC"] },
+          { name: "restaure", keys: ["KeyR"] },
+          { name: "reset", keys: ["KeyP"] },
         ]}
       >
         <Canvas
