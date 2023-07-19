@@ -6,6 +6,7 @@ import PlayersList from "./PlayersList";
 import EmojiSelector from "./EmojiSelector";
 import PlayersReactions from "./PlayersReactions";
 import TouchControls from "./TouchControls";
+import KeyboardControlsInfo from "./Keyboard";
 
 import ControlSelector from "./ControlSelector";
 
@@ -19,6 +20,7 @@ export default function Overlay() {
   return (
     <>
       {currentControls === "touch" ? <TouchControls /> : null}
+      {currentControls === "keyboard" ? <KeyboardControlsInfo /> : null}
       <ControlSelector />
       <Title />
       <PlayersList />
