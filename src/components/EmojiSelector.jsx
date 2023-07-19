@@ -6,18 +6,18 @@ export default function EmojiSelector({ currentEmoji, setCurrentEmoji }) {
       <a
         className="emoji-button"
         onClick={() =>
-          setCurrentEmoji([...currentEmoji, { emoji: "🫶", id: myPlayer().id }])
+          setCurrentEmoji([...currentEmoji, { emoji: " 🏁 " , id: myPlayer().id }])
         }
       >
-        <span role="img">🫶</span>
+        <span role="img">🏁</span>
       </a>
       <a
         className="emoji-button"
         onClick={() =>
-          setCurrentEmoji([...currentEmoji, { emoji: "🥳", id: myPlayer().id }])
+          setCurrentEmoji([...currentEmoji, { emoji: "✔️", id: myPlayer().id }])
         }
       >
-        <span role="img">🥳</span>
+        <span role="img">✔️</span>
       </a>
       <a
         className="emoji-button"
@@ -26,6 +26,22 @@ export default function EmojiSelector({ currentEmoji, setCurrentEmoji }) {
         }
       >
         <span role="img">👋</span>
+      </a>
+      <a
+        className="emoji-button"
+        onClick={() =>
+          setCurrentEmoji([...currentEmoji, { emoji: " 🤣 ", id: myPlayer().id }])
+        }
+      >
+        <span role="img">🤣</span>
+      </a>
+      <a
+        className="emoji-button"
+        onClick={() =>
+          setCurrentEmoji([...currentEmoji, { emoji: " 💥 ", id: myPlayer().id }])
+        }
+      >
+        <span role="img">💥</span>
       </a>
     </div>
   );

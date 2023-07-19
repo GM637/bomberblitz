@@ -22,7 +22,7 @@ export default function Experience() {
         <Canvas
           shadows
           camera={{
-            position: [0, 10, 7],
+            position: [0, 15, 15],
             fov: 50,
             near: 0.1,
             far: 1000,

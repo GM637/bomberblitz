@@ -4,6 +4,7 @@ import { radToXY } from "../utils/angles";
 import useGame from "../stores/useGame";
 
 import bomb from "../assets/bomb.png";
+import jump from "../assets/jump.png";
 
 export default function TouchControls() {
   return (
@@ -49,7 +50,7 @@ function ActionButtons() {
         <img src={bomb} alt="bomb" draggable={false} />
       </button>
       <button>
-        <img src={bomb} alt="bomb" draggable={false} />
+        <img src={jump} alt="jump" draggable={false} />
       </button>
     </div>
   );
