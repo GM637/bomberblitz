@@ -14,7 +14,7 @@ const KeyboardControlsInfo = () => {
 
   return (
     <div style={styles}>
-      <h4>WASD - move | C - drop 💣</h4>
+      <h4>ARROW KEYS - move | C - drop 💣</h4>
     </div>
   );
 };
