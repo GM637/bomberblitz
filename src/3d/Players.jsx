@@ -10,6 +10,7 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
+import useGame from "../stores/useGame";
 
 import { randomStartPos } from "../utils/randomPosition";
 
@@ -70,8 +71,14 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
   const [bodies, setBodies] = useState([]);
   const [characters, setCharacters] = useState([]);
 
+  const currentControls = useGame((state) => state.currentControls);
+
+  const nipplePos = useGame((state) => state.nipplePos);
+  const bombPressed = useGame((state) => state.bombPressed);
+
   // not safe practice, client could modoify this
-  const [lastBomb, setLastBomb] = useState(0);
+  const lastBomb = useGame((state) => state.lastBomb);
+  const setLastBomb = useGame((state) => state.setLastBomb);
 
   const up = useKeyboardControls((state) => state.up);
   const down = useKeyboardControls((state) => state.down);
@@ -118,16 +125,31 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
   }, []);
 
   useFrame((_, delta) => {
-    // keyboard controls
-    direction.x = Number(right) - Number(left);
-    direction.z = Number(down) - Number(up);
-    direction.normalize();
+    if (!currentControls) return;
+    if (!nipplePos) return;
 
-    // update shared direction inputs
-    myPlayer().setState("dir", direction);
+    // nipple controls
+    if (currentControls === "touch") {
+      myPlayer().setState("dir", {
+        x: nipplePos?.x || 0,
+        z: nipplePos?.y || 0,
+      });
+    }
+
+    // keyboard controls
+    if (currentControls === "keyboard") {
+      direction.x = Number(right) - Number(left);
+      direction.z = Number(down) - Number(up);
+      direction.normalize();
+      // update shared direction inputs
+      myPlayer().setState("dir", direction);
+    }
 
     // drop bomb
-    if (bomb) {
+    if (
+      (currentControls === "keyboard" && bomb) ||
+      (currentControls === "touch" && bombPressed)
+    ) {
       // retrieve elapsed time
       const elapsedTime = clock.getElapsedTime();
 
@@ -148,6 +170,7 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
         if (!bodyRef?.current) continue;
 
         const dir = state.getState("dir");
+        if (!dir) continue;
 
         //move rigidbody
         const impulse = {

@@ -20,16 +20,21 @@ export default function Experience() {
         ]}
       >
         <Canvas
+          shadows
           camera={{
-            fov: 75,
+            position: [0, 15, 15],
+            fov: 50,
             near: 0.1,
             far: 1000,
-            position: [0, 10, 7],
           }}
-          shadows
         >
           <Scene />
-          <OrbitControls />
+          <OrbitControls
+            target={[0, 3, 3]}
+            enablePan={false}
+            enableZoom={true}
+            enableRotate={false}
+          />
         </Canvas>
         <Loader />
       </KeyboardControls>

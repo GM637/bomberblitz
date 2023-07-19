@@ -17,7 +17,8 @@ export default function Scene() {
     <>
       <Lights />
       <Suspense fallback={null}>
-        <Physics debug>
+        <Physics>
+          {/* <Physics debug> */}
           <Arena />
           <Players
             currentBombsIds={currentBombsIds}

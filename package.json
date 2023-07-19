@@ -16,8 +16,10 @@
     "playroomkit": "^0.0.28",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-nipple": "^1.0.2",
     "three": "^0.154.0",
-    "three-stdlib": "^2.23.13"
+    "three-stdlib": "^2.23.13",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",

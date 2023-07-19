@@ -3,29 +3,38 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 2rem;
+  color: #ddd;
+  margin-top: 0.25rem;
+  text-align: center;
 }
 
 .PlayersList {
   position: fixed;
-  top: 20%;
-  left: 10%;
+  top: 110px;
+  left: 25px;
+
   & .player-list {
     padding: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
+
     & .player-profile {
       margin-left: 10px;
       display: flex;
       flex-direction: row;
       gap: 10px;
       align-items: center;
+
       & .player-avatar {
-        height: 4rem;
-        width: 4rem;
+        height: 3.5rem;
+        width: 3.5rem;
       }
+
       & .player-name {
-        font-size: 1.5rem;
+        font-size: 1rem;
+        color: #ddd;
       }
     }
   }
@@ -33,16 +42,17 @@
 
 .EmojiSelector {
   position: fixed;
-  top: 20%;
-  right: 10%;
+  top: 50px;
+  right: 25px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   & .emoji-button {
     padding: 0;
-    width: 5rem;
-    height: 5rem;
-    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -53,10 +63,12 @@
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
   }
+
   & .emoji-button:hover {
     background: #00000080;
     cursor: pointer;
   }
+
   & .emoji-button:active {
     background: #000000;
     cursor: pointer;
@@ -65,65 +77,245 @@
 
 .PlayersReactions {
   position: fixed;
-  bottom: 20%;
-  left: 0;
-  height: 400px;
-  width: 300px;
+  top: 96px;
+  right: 180px;
+  height: 120px;
+  width: 90px;
+
   & .emoji-display {
     display: flex;
-    height: 100%;
-    width: 100%;
+    height: 75%;
+    width: 75%;
     align-items: center;
     justify-content: center;
     font-size: 6rem;
     position: absolute;
+
     & .card {
       background: #fff;
       border: 2px solid #000000;
       /* box-shadow: 0px 0.4rem 0px rgba(0, 0, 0, 0.25); */
       border-radius: 1rem;
-      padding: 3rem 2rem;
+      padding: 1.8rem 0.9rem;
+      opacity: 0;
       /* opacity: 0; */
       -webkit-user-select: none; /* Safari */
       -ms-user-select: none; /* IE 10 and IE 11 */
       user-select: none; /* Standard syntax */
-      animation: slideUp 2s linear;
+      animation: slideLeft 4s linear;
+
       & .avatar img {
         width: 2.5rem;
         position: absolute;
-        top: 3px;
-        left: 3px;
+        top: 6px;
+        left: 6px;
       }
     }
   }
 }
 
-@keyframes slideUp {
+@keyframes slideLeft {
   0% {
-    opacity: 1;
-    margin-right: 200vh;
-    animation-timing-function: ease-out;
-  }
-  15% {
-    margin-right: -10vh;
-    animation-timing-function: ease-in;
-  }
-  18% {
-    margin-right: 5vh;
+    opacity: 0.5;
+    margin-right: -60vw;
     animation-timing-function: ease-out;
   }
   20% {
     margin-right: 0px;
-    animation-timing-function: ease-in;
-  }
-  95% {
-    opacity: 1;
-    margin-right: 0px;
-    animation-timing-function: ease-in;
-  }
-  100% {
-    margin-right: 0px;
     opacity: 1;
     animation-timing-function: ease-out;
+  }
+  100% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+}
+
+.ControlSelector {
+  /* display: flex; */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  justify-content: center;
+  align-items: center;
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background: none;
+
+    & img {
+      width: 80%;
+      height: 80%;
+
+      /* change image color */
+      filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+    & img::selection {
+      background: transparent;
+    }
+  }
+
+  & button:hover {
+    cursor: pointer;
+
+    & img {
+      filter: invert(20%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+
+  & button:active {
+    cursor: pointer;
+
+    & img {
+      filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+}
+
+.Nipple {
+  position: fixed;
+  bottom: 60px;
+  left: 32px;
+  background: #333;
+  height: 30vh;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+
+  & .ReactNipple {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nipple_collection_2 {
+  background: blue !important;
+}
+
+/* .front {
+  background: yellow !important;
+} */
+
+.ActionButtons {
+  position: fixed;
+  bottom: 10vh;
+  right: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background: #333;
+    padding: 10px;
+
+    width: min(10vw, 20vh);
+    aspect-ratio: 1/1;
+
+    & img {
+      width: 80%;
+      height: 80%;
+
+      /* change image color */
+      filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+    & img::selection {
+      background: transparent;
+    }
+  }
+
+  & button:hover {
+    cursor: pointer;
+
+    & img {
+      filter: invert(80%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+
+  & button:active {
+    cursor: pointer;
+
+    & img {
+      filter: invert(50%) sepia(0%) saturate(0%) hue-rotate(0deg)
+        brightness(100%) contrast(100%);
+    }
+  }
+}
+
+.Settings {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: red;
+}
+
+.CameraPositionSelector {
+  display: flex;
+  align-items: center;
+
+  & .options {
+    position: absolute;
+    height: 100%;
+    width: 400px;
+    overflow: hidden;
+    background: yellow;
+    z-index: 3;
+  }
+
+  & .options.visible {
+    background: red;
+
+    & button {
+      z-index: 2;
+    }
+
+    & button:nth-child(1) {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+
+    & button:nth-child(2) {
+      position: relative;
+      top: 0;
+      left: 100%;
+      transform: translateX(-100%);
+    }
+  }
+
+  & .options.hidden {
+    background: blue;
+
+    & button:nth-child(1) {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    & button:nth-child(2) {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+    }
   }
 }

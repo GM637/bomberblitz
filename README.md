@@ -28,3 +28,7 @@ Multiplayer state management: [Playroom](https://joinplayroom.com/)
 Renderer: [React-Three-Fiber](https://docs.pmnd.rs/react-three-fiber/)
 
 Three-Fiber helpers: [Drei](https://github.com/pmndrs/drei)
+
+Local state management: [Zustand](https://github.com/pmndrs/zustand)
+
+On-screen Joystick: [React-Nipple](https://github.com/loopmode/react-nipple)
