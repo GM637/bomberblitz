@@ -5,8 +5,9 @@ import Title from "./Title";
 import PlayersList from "./PlayersList";
 import EmojiSelector from "./EmojiSelector";
 import PlayersReactions from "./PlayersReactions";
-import ControlSelector from "./ControlSelector";
 import TouchControls from "./TouchControls";
+
+import ControlSelector from "./ControlSelector";
 
 import "./Overlay.css";
 import { useEffect } from "react";
@@ -19,13 +20,13 @@ export default function Overlay() {
     <>
       {currentControls === "touch" ? <TouchControls /> : null}
       <ControlSelector />
-      {/* <Title />
+      <Title />
       <PlayersList />
       <PlayersReactions currentEmoji={currentEmoji} />
       <EmojiSelector
         currentEmoji={currentEmoji}
         setCurrentEmoji={setCurrentEmoji}
-      /> */}
+      />
     </>
   );
 }

@@ -1,5 +1,7 @@
 import ReactNipple from "react-nipple";
-import { radToXZ } from "../utils/angles";
+import { radToXY } from "../utils/angles";
+
+import useGame from "../stores/useGame";
 
 import bomb from "../assets/bomb.png";
 
@@ -13,6 +15,9 @@ export default function TouchControls() {
 }
 
 function Nipple() {
+  const setNipplePos = useGame((state) => state.setNipplePos);
+  const resetNipplePos = useGame((state) => state.resetNipplePos);
+
   return (
     <div className="Nipple">
       <ReactNipple
@@ -23,17 +28,24 @@ function Nipple() {
           height: "100%",
           position: "relative",
         }}
-        onEnd={() => console.log("end")}
-        onMove={(_evt, data) => console.log(radToXZ(data.angle.radian))}
+        onEnd={() => resetNipplePos()}
+        onMove={(_evt, data) => setNipplePos(radToXY(data.angle.radian))}
       />
     </div>
   );
 }
 
 function ActionButtons() {
+  const bombPressed = useGame((state) => state.bombPressed);
+  const setBombPressed = useGame((state) => state.setBombPressed);
   return (
     <div className="ActionButtons">
-      <button>
+      <button
+        onMouseUp={() => (bombPressed ? setBombPressed(false) : null)}
+        onMouseDown={() => (bombPressed ? null : setBombPressed(true))}
+        onTouchStart={() => (bombPressed ? null : setBombPressed(true))}
+        onTouchEnd={() => (bombPressed ? setBombPressed(false) : null)}
+      >
         <img src={bomb} alt="bomb" draggable={false} />
       </button>
       <button>

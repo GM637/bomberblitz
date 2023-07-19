@@ -7,9 +7,9 @@ export function smoothAngle(curr, target, speed) {
   return curr + delta;
 }
 
-export function radToXZ(rad) {
+export function radToXY(rad) {
   const x = Math.cos(rad);
-  const z = Math.sin(rad);
+  const y = Math.sin(rad);
 
-  return { x: x, z: z };
+  return { x: x, y: -y };
 }

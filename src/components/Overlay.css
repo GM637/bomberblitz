@@ -3,6 +3,10 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 3rem;
+  color: #ddd;
+  margin-top: 1rem;
+
 }
 
 .PlayersList {
@@ -38,7 +42,7 @@
 .EmojiSelector {
   position: fixed;
   top: 20%;
-  right: 10%;
+  right: 15%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -72,10 +76,10 @@
 
 .PlayersReactions {
   position: fixed;
-  bottom: 20%;
-  left: 0;
-  height: 400px;
-  width: 300px;
+  top: 20%;
+  right: 5%;
+  height: 200px;
+  width: 150px;
 
   & .emoji-display {
     display: flex;
@@ -96,7 +100,7 @@
       -webkit-user-select: none; /* Safari */
       -ms-user-select: none; /* IE 10 and IE 11 */
       user-select: none; /* Standard syntax */
-      animation: slideUp 2s linear;
+      animation: slideLeft 2s linear;
 
       & .avatar img {
         width: 2.5rem;
@@ -108,18 +112,18 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes slideLeft {
   0% {
     opacity: 1;
-    margin-right: 200vh;
+    margin-right: -20vw;
     animation-timing-function: ease-out;
   }
   15% {
-    margin-right: -10vh;
+    margin-right: -10vw;
     animation-timing-function: ease-in;
   }
   18% {
-    margin-right: 5vh;
+    margin-right: 5vw;
     animation-timing-function: ease-out;
   }
   20% {
@@ -139,10 +143,10 @@
 }
 
 .ControlSelector {
+  /* display: flex; */
   position: fixed;
-  top: 5vh;
-  left: 5vw;
-  display: flex;
+  top: 20px;
+  left: 20px;
   justify-content: center;
   align-items: center;
 
@@ -213,7 +217,7 @@
 .ActionButtons {
   position: fixed;
   bottom: 10vh;
-  right: 10vw;
+  right: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,6 +232,9 @@
     border-radius: 30px;
     background: #333;
     padding: 10px;
+
+    width: min(10vw, 20vh);
+    aspect-ratio: 1/1;
 
     & img {
       width: 80%;
@@ -257,6 +264,69 @@
     & img {
       filter: invert(50%) sepia(0%) saturate(0%) hue-rotate(0deg)
         brightness(100%) contrast(100%);
+    }
+  }
+}
+
+.Settings {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: red;
+}
+
+.CameraPositionSelector {
+  display: flex;
+  align-items: center;
+
+  & .options {
+    position: absolute;
+    height: 100%;
+    width: 400px;
+    overflow: hidden;
+    background: yellow;
+    z-index: 3;
+  }
+
+  & .options.visible {
+    background: red;
+
+    & button {
+      z-index: 2;
+    }
+
+    & button:nth-child(1) {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+
+    & button:nth-child(2) {
+      position: relative;
+      top: 0;
+      left: 100%;
+      transform: translateX(-100%);
+    }
+  }
+
+  & .options.hidden {
+    background: blue;
+
+    & button:nth-child(1) {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    & button:nth-child(2) {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
     }
   }
 }
