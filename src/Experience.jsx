@@ -1,7 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, Loader } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
-import MountainRing from './environment/MountainRing';
 
 import Scene from "./scenes/Scene";
 
