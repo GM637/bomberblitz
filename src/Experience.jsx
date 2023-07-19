@@ -1,12 +1,16 @@
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, Loader } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
+import AudioComponent from "./components/AudioPlayer";
 
 import Scene from "./scenes/Scene";
 
 import "./Experience.css";
 
 export default function Experience() {
+
+  const audioUrl = 'src/sounds/BomberBG.mp3'
+
   return (
     <div className="Experience">
       <KeyboardControls
@@ -36,6 +40,7 @@ export default function Experience() {
             enableZoom={true}
             enableRotate={false}
           />
+          <AudioComponent url={audioUrl} loop volume={0.5} />
         </Canvas>
         <Loader />
       </KeyboardControls>

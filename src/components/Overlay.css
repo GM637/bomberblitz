@@ -8,20 +8,6 @@
   margin-top: -2rem;
   text-align: center;
   text-shadow: -0.2rem 0.2rem 0px rgba(0, 0, 0, 0.2); 
-  text
-}
-
-.KeyboardInfo {
-  position: fixed;
-  buttom: 2rem;
-  left: 24px;
-  transform: translateX(-50%);
-  font-size: 1.5rem;
-  color: #ddd;
-  margin-top: -2rem;
-  text-align: center;
-  text-shadow: -0.2rem 0.2rem 0px rgba(0, 0, 0, 0.2); 
-  text
 }
 
 .PlayersList {
