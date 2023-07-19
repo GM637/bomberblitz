@@ -3,10 +3,11 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #ddd;
-  margin-top: 0.25rem;
+  margin-top: 0.1rem;
   text-align: center;
+  text-shadow: -0.2rem 0.2rem 0px rgba(0, 0, 0, 0.2); 
 }
 
 .PlayersList {
@@ -18,7 +19,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 
     & .player-profile {
       margin-left: 10px;
@@ -28,8 +29,9 @@
       align-items: center;
 
       & .player-avatar {
-        height: 3.5rem;
-        width: 3.5rem;
+        height: 3rem;
+        width: 3rem;
+        
       }
 
       & .player-name {
@@ -42,17 +44,18 @@
 
 .EmojiSelector {
   position: fixed;
-  top: 50px;
+  top: 36px;
   right: 25px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 
   & .emoji-button {
     padding: 0;
-    width: 3rem;
-    height: 3rem;
-    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+    box-shadow: -0.1rem 0.1rem 0px rgba(0, 0, 0, 0.1); 
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -79,8 +82,8 @@
   position: fixed;
   top: 96px;
   right: 180px;
-  height: 120px;
-  width: 90px;
+  height: 90px;
+  width: 75px;
 
   & .emoji-display {
     display: flex;
@@ -94,9 +97,9 @@
     & .card {
       background: #fff;
       border: 2px solid #000000;
-      /* box-shadow: 0px 0.4rem 0px rgba(0, 0, 0, 0.25); */
+      box-shadow: 0px 0.4rem 0px rgba(0, 0, 0, 0.25); 
       border-radius: 1rem;
-      padding: 1.8rem 0.9rem;
+      padding: 1.6rem 0.8rem;
       opacity: 0;
       /* opacity: 0; */
       -webkit-user-select: none; /* Safari */
