@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls, Loader } from "@react-three/drei";
 import { OrbitControls } from "@react-three/drei";
+import MountainRing from './environment/MountainRing';
 
 import Scene from "./scenes/Scene";
 
@@ -27,6 +28,7 @@ export default function Experience() {
             near: 0.1,
             far: 1000,
           }}
+
         >
           <Scene />
           <OrbitControls
@@ -35,6 +37,7 @@ export default function Experience() {
             enableZoom={true}
             enableRotate={false}
           />
+           <MountainRing radius={10} width={1} height={2} segments={100} />
         </Canvas>
         <Loader />
       </KeyboardControls>
