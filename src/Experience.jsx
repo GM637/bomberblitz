@@ -9,7 +9,7 @@ import "./Experience.css";
 
 export default function Experience() {
 
-  const audioUrl = 'src/sounds/BomberBG.mp3'
+  const audioUrl = 'src\sounds\BomberBG.mp3'
 
   return (
     <div className="Experience">

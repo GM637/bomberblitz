@@ -14,17 +14,25 @@ const AudioComponent = ({ url, loop = false, volume = 1.0 }) => {
   const handleDocumentClick = () => {
     if (!playedOnce) {
       setPlayedOnce(true);
-      play();
+      console.log('Audio is now playing!'); // Add console log to track audio start
     }
   };
 
   // Add click event listener when the component mounts
   useEffect(() => {
-    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('click', handleDocumentClick, { once: true });
     return () => {
+      document.removeEventListener('click', handleDocumentClick); // Remove the click event listener when the component unmounts
       stop(); // Clean up: stop the audio when the component unmounts
     };
   }, [play, stop]);
+
+  // Play the audio when playedOnce changes to true
+  useEffect(() => {
+    if (playedOnce) {
+      play();
+    }
+  }, [playedOnce, play]);
 
   return null; // You can replace this with an actual 3D model or other elements if needed
 };
