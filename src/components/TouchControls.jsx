@@ -39,6 +39,8 @@ function Nipple() {
 function ActionButtons() {
   const bombPressed = useGame((state) => state.bombPressed);
   const setBombPressed = useGame((state) => state.setBombPressed);
+  const jumpPressed = useGame((state) => state.jumpPressed);
+  const setJumpPressed = useGame((state) => state.setJumpPressed);
   return (
     <div className="ActionButtons">
       <button
@@ -49,7 +51,12 @@ function ActionButtons() {
       >
         <img src={bomb} alt="bomb" draggable={false} />
       </button>
-      <button>
+      <button
+        onMouseUp={() => (jumpPressed ? setJumpPressed(false) : null)}
+        onMouseDown={() => (jumpPressed ? null : setJumpPressed(true))}
+        onTouchStart={() => (jumpPressed ? null : setJumpPressed(true))}
+        onTouchEnd={() => (jumpPressed ? setJumpPressed(false) : null)}
+      >
         <img src={jump} alt="jump" draggable={false} />
       </button>
     </div>

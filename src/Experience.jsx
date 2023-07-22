@@ -9,7 +9,7 @@ import "./Experience.css";
 
 export default function Experience() {
 
-  const audioUrl = 'src\sounds\BomberBG.mp3'
+  const audioUrl = 'srcsoundsBomberBG.mp3'
 
   return (
     <div className="Experience">
@@ -19,8 +19,8 @@ export default function Experience() {
           { name: "down", keys: ["ArrowDown"] },
           { name: "left", keys: ["ArrowLeft"] },
           { name: "right", keys: ["ArrowRight"] },
-          { name: "jump", keys: ["KeyX"] },
-          { name: "bomb", keys: ["KeyC"] },
+          { name: "jump", keys: ["Space"] },
+          { name: "bomb", keys: ["KeyX"] },
         ]}
       >
         <Canvas

@@ -58,7 +58,7 @@ const LocalPlayer = forwardRef(({ position }, ref) => {
       type="dynamic"
       colliders={false}
       position={position}
-      linearDamping={0.7}
+      linearDamping={0.5}
     >
       <CapsuleCollider args={[0.12, 0.3]} />
     </RigidBody>
@@ -75,16 +75,21 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
 
   const nipplePos = useGame((state) => state.nipplePos);
   const bombPressed = useGame((state) => state.bombPressed);
+  const jumpPressed = useGame((state) => state.jumpPressed);
 
   // not safe practice, client could modoify this
   const lastBomb = useGame((state) => state.lastBomb);
   const setLastBomb = useGame((state) => state.setLastBomb);
+  const lastJump = useGame((state) => state.lastJump);
+  const setLastJump = useGame((state) => state.setLastJump);
+
 
   const up = useKeyboardControls((state) => state.up);
   const down = useKeyboardControls((state) => state.down);
   const left = useKeyboardControls((state) => state.left);
   const right = useKeyboardControls((state) => state.right);
   const bomb = useKeyboardControls((state) => state.bomb);
+  const jump = useKeyboardControls((state) => state.jump);
 
   const direction = new THREE.Vector3();
 
@@ -175,10 +180,19 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
         //move rigidbody
         const impulse = {
           x: dir.x * VELOCITY * delta,
-          y: 0,
+          y: -0.05,
           z: dir.z * VELOCITY * delta,
         };
 
+
+        // jump
+        if (
+          (currentControls === "keyboard" && jump) ||
+          (currentControls === "touch" && jumpPressed) 
+        ) {
+          impulse.y = 15 * delta;
+        }
+        
         const linvel = bodyRef.current.linvel();
 
         if (Math.abs(linvel.x) >= MAX_SPEED) impulse.x = 0;

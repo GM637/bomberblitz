@@ -1,19 +1,19 @@
 /*
 // // // CHARACTER
 */
-export const VELOCITY = 5;
+export const VELOCITY = 6;
 export const FIRE_SPEED = 1;
 export const RUN_SPEED = 2;
-export const SONIC_SPEED = 6.75;
-export const MAX_SPEED = 7;
+export const SONIC_SPEED = 8.75;
+export const MAX_SPEED = 9;
 
-export const ROTATION_SPEED = 7;
+export const ROTATION_SPEED = 10;
 
 /*
 // // // BOMB
 */
 export const BOMB_SPEED = 0.5;
-export const BOMB_INTERVAL = 3;
+export const BOMB_INTERVAL = 1;
 export const BOMB_DISTANCE = 1;
 
 export const BOMB_SCALE_FACTOR = 0.2;

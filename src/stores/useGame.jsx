@@ -4,7 +4,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 export default create(
   subscribeWithSelector((set) => {
     return {
-      currentControls: window.matchMedia ? "touch" : "keyboard",
+      currentControls: window.matchMedia ? "keyboard" : "touch",
 
       cameraSetup: false,
 
