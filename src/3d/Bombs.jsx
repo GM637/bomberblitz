@@ -69,6 +69,7 @@ export default function Bombs({ currentBombsIds, setCurrentBombsIds }) {
       setBombs([...bombs, { id, bodyRef, modelRef, state }]);
     }
     // bomb exploded
+
   }, [currentBombsIds]);
 
   useFrame(() => {

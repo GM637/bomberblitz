@@ -184,15 +184,21 @@ export default function Players({ currentBombsIds, setCurrentBombsIds }) {
           z: dir.z * VELOCITY * delta,
         };
 
+        // Define a boolean variable to track whether jump action has been executed
+        let hasJumped = false;
 
         // jump
         if (
-          (currentControls === "keyboard" && jump) ||
-          (currentControls === "touch" && jumpPressed) 
+          (currentControls === "keyboard" && jump && !hasJumped) ||
+          (currentControls === "touch" && jumpPressed && !hasJumped)
         ) {
-          impulse.y = 15 * delta;
+          // Perform the jump action
+          impulse.y = 5 * delta;
+
+          // Set the flag to true so that the jump action won't be repeated until the input is detected again
+          hasJumped = true;
         }
-        
+
         const linvel = bodyRef.current.linvel();
 
         if (Math.abs(linvel.x) >= MAX_SPEED) impulse.x = 0;
